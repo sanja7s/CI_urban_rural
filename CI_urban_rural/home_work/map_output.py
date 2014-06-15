@@ -1,16 +1,45 @@
 '''
-Created on Jun 11, 2014
+Created on Jun 15, 2014
 
 @author: sscepano
 '''
+###########################################################################################################
+### the output saved to a .TSV file  for home and work locations is here reused to plot on a map the commute
+###########################################################################################################
+
 import networkx as nx
 from collections import defaultdict
 
-def map_commutes(G):
+###########################################################################################################
+### this one is the main; reads in the .TSV to a DiGraph and then calls the mapping map_commutes with G
+###########################################################################################################
+def map_commute_from_home2work():
     
-    import numpy as np    
+    G = nx.DiGraph()
+    
+    user_home_work = read_in_home_work_output()
+    
+    for user in user_home_work.keys():
+        home = int(user_home_work[user][0])
+        work = int(user_home_work[user][1])
+        if home <> work:
+            if G.has_edge(home, work):
+                G[home][work]['weight'] += 1
+            else:
+                G.add_edge(home,work, weight = 1)
+            
+    map_commutes(G)
+    
+    return
+
+###########################################################################################################
+### this one does the plotting using Basemap and Shapefiles
+###########################################################################################################
+def map_commutes(G):
+        
     import matplotlib.pyplot as plt
     from mpl_toolkits.basemap import Basemap
+    import matplotlib.cm as cmx
     
     import matplotlib as mpl
     mpl.rcParams['font.size'] = 10.
@@ -22,6 +51,7 @@ def map_commutes(G):
     import dbflib
     from matplotlib.collections import LineCollection
     from matplotlib import cm
+    import matplotlib.colors as colors
      
     ###########################################################################################
     fig = plt.figure(3)
@@ -40,7 +70,7 @@ def map_commutes(G):
                 lon_0 = -5.30)
       
     # read subpref coordinates
-    subpref_coord = read_subpref_lonlat()
+    subpref_coord = read_in_subpref_lonlat()
     
     shp = ShapeFile(r'/home/sscepano/DATA SET7S/D4D/SubPrefecture/GEOM_SOUS_PREFECTURE')
     dbf = dbflib.open(r'/home/sscepano/DATA SET7S/D4D/SubPrefecture/GEOM_SOUS_PREFECTURE')
@@ -79,6 +109,11 @@ def map_commutes(G):
         G.remove_node(-1)
     if G.has_node(0): 
         G.remove_node(0)
+        
+###########################################################################################################
+### this is the main part: scale weights of # commuters, use colormap by work location and then plot
+### all or just the routes with more that 10 commutes 
+###########################################################################################################
     
     max7s = 1
     min7s = 10000000
@@ -98,6 +133,11 @@ def map_commutes(G):
     for u,v,d in G.edges(data=True):
         scaled_weight[u][v] = (d['weight'] - min7s) / (max7s - min7s)
     
+    values = range(256)    
+    jet = cm = plt.get_cmap('jet') 
+    cNorm  = colors.Normalize(vmin=0, vmax=values[-1])
+    scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=jet)
+    
     for u, v, d in G.edges(data=True):
 #         lo = []
 #         la = []  
@@ -110,21 +150,27 @@ def map_commutes(G):
 #         m.plot(x,y, linewidth= linewidth7s)
 #         if linewidth7s > 1:
 #             print (linewidth7s)
-        linewidth7s = scaled_weight[u][v] * 2.5 + 0.25    
-        m.drawgreatcircle(subpref_coord[u][0], subpref_coord[u][1], \
-                          subpref_coord[v][0], subpref_coord[v][1], linewidth= linewidth7s, color='r')
+        if d['weight'] >= 10: 
+            colorVal = scalarMap.to_rgba(values[v])
+            linewidth7s = scaled_weight[u][v] * 2.5 + 0.35  
+###########################################################################################################
+### no scaling vs scaling the width of the line
+###########################################################################################################
+#            linewidth7s = d['weight'] / 10   
+            m.drawgreatcircle(subpref_coord[u][0], subpref_coord[u][1], \
+                              subpref_coord[v][0], subpref_coord[v][1], linewidth= linewidth7s, color=colorVal)
 
     m.drawcoastlines()
-    m.fillcontinents()
+    #m.fillcontinents()
         
-    plt.savefig('/home/sscepano/Project7s/D4D/CI/urban_rural/home_work/OUTPUT_files/maps/hw_commuting_cur.png',dpi=700)
+    plt.savefig('/home/sscepano/Project7s/D4D/CI/urban_rural/home_work/OUTPUT_files/maps/hw_commuting_colored_by_work_gr10commuters.png',dpi=700)
     #plt.show()
     
     ###################################################################################################3
     
     return
 
-def read_subpref_lonlat():
+def read_in_subpref_lonlat():
     
     file_name = "/home/sscepano/DATA SET7S/D4D/SUBPREF_POS_LONLAT.TSV"
     f = open(file_name, "r")
@@ -141,47 +187,9 @@ def read_subpref_lonlat():
         subpref_pos[subpref][1] = lat
         
     return subpref_pos
-    
 
-def map_commute_from_home2work():
-    
-    G = nx.DiGraph()
-    
-    i = 0
-    
-    user_home_work = read_in_file()
-    
-    for user in user_home_work.keys():
-        home = int(user_home_work[user][0])
-        work = int(user_home_work[user][1])
-        if home <> work:
-            if G.has_edge(home, work):
-                G[home][work]['weight'] += 1
-            else:
-                G.add_edge(home,work, weight = 1)
-            
-#         if home <> work and home <> -1 and work <> -1:
-#             i+=1
-#             print home, work 
-#             
-#         if home == 0 or work == 0:
-#             print "FOUND zero subpref"
-#              
-#     print i
-    
-#     i = 0
-#     for u,v,d in G.edges(data=True):
-#         i += d['weight'] 
-#         print u,v,d['weight'] 
-#          
-#     print i
-            
-    map_commutes(G)
-    
-    return
-
-def read_in_file():
-    
+def read_in_home_work_output():
+                  
     file_name = "/home/sscepano/Project7s/D4D/CI/urban_rural/home_work/OUTPUT_files/users_work_home.tsv"
     f = open(file_name, "r")
     
