@@ -14,7 +14,8 @@ def distribute_task(data1, data2):
         print "NameError"
      
 #######################################################################################      
-# this part is for reading in the data; comment out after the first step
+# this part is for reading in the data; comment out after the first step 
+### (should work without commenting also)
 #######################################################################################   
 #     if data1 is None:
 #         print "Read data started"

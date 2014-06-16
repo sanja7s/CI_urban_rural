@@ -5,8 +5,12 @@ Created on Jun 9, 2014
 '''
 import home_work.read_in as rd
 import home_work.save_output as so
+import home_work.map_output as mo
 import home_work.play_data as pd
 
+#######################################################################################      
+# the functions for home work to be called by the distributor -- task manager
+#######################################################################################   
 def read_data():
     
     try:
@@ -38,7 +42,7 @@ def save_data(data):
         print e
             
 #     so.save_home_work(data)
-    so.map_commute_from_home2work(data)
+    mo.map_commute_from_home2work(data)
 
 
     

@@ -4,7 +4,7 @@ Created on Jun 15, 2014
 @author: sscepano
 '''
 ###########################################################################################################
-### the output saved to a .TSV file  for home and work locations is here reused to plot on a map the commute
+### the output saved to a .TSV file  for home and work locations is here reused to plot on a map the commutes
 ###########################################################################################################
 
 import networkx as nx

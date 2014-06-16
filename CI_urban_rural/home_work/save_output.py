@@ -5,8 +5,10 @@ Created on Jun 9, 2014
 '''
 from os.path import join
 from collections import defaultdict
-import networkx as nx
 
+#######################################################################################      
+# this is where we save the extracted data needed for the next steps to .TSV files
+####################################################################################### 
 def save_home_work(data):
     
     print len(data)
@@ -63,7 +65,11 @@ def save_home_work(data):
     
     return
 
-
+#######################################################################################      
+# in the  input we take and rank by the frequency of a user calls all the subprefs he
+# visited. Here we extract just the first one from the non-working hours for HOME, 
+#and first one from the working hours for WORK
+####################################################################################### 
 def select_only_home_work(data):
     
     user_home_work = defaultdict(int)

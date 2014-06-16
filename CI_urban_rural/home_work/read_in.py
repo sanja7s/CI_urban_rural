@@ -49,9 +49,11 @@ def read_in_home_work(c, homework):
                 call_hour = int(call_time[11:13])
                 call_date = date(int(call_time[:4]), int(call_time[5:7]), int(call_time[8:10]))
      
+                # just from time to time testing printing to know we are reading in still
                 if i in [10000, 100000, 1000000, 10000000, 100000000]:
                     print i, len(homework['home']), len(homework['work'])
                 
+                # the KeyError checks below might not be necessary since we have .get above, but it works fine 
                 if call_date.weekday() < 5:
                     if call_hour > 19 or call_hour <= 5:
                         try:
