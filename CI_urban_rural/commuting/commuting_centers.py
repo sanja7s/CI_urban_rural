@@ -99,8 +99,10 @@ def save_commuting_graph():
     for k in g.keys():
         for k2 in g[k].keys():
             f.write(str(k) + '\t' + str(k2) + '\t' + str(g[k][k2]) + '\n' )
-        
+
+### only for saving        
 # save_num_commuters()
 
+### also for calculating the edge graph
 # calculate_commuting_graph()
 save_commuting_graph()    
