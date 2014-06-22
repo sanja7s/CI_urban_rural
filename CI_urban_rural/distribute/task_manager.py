@@ -25,9 +25,9 @@ def distribute_task(data1, data2):
 #######################################################################################      
 # this part is for playing with the data, so testing & arranging them as needed
 #######################################################################################           
-#     print "before playing ", len(data1)
-#     data2 = hw.play_data(data1, data2)
-#     print "after playing ", len(data2)
+    print "before playing ", len(data1)
+    data2 = hw.play_data(data1, data2)
+    print "after playing ", len(data2)
         
 #######################################################################################      
 # this part is for saving  the data, after you learned them from playing

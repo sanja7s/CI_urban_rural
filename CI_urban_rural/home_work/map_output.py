@@ -208,4 +208,4 @@ def read_in_home_work_output():
     return user_home_work
 
 
-map_commute_from_home2work()
+# map_commute_from_home2work()

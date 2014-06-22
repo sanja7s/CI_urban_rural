@@ -105,4 +105,4 @@ def save_commuting_graph():
 
 ### also for calculating the edge graph
 # calculate_commuting_graph()
-save_commuting_graph()    
+# save_commuting_graph()    

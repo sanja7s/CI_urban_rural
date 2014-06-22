@@ -13,7 +13,7 @@ def save_home_work(data):
     
     print len(data)
     
-    location = "/home/sscepano/Project7s/D4D/CI/urban_rural/home_work/OUTPUT_files"
+    location = "/home/sscepano/Project7s/D4D/CI/urban_rural/home_work/OUTPUT_files/vCleaned"
     file_name = "users_home_frequency.tsv"
     file_name2 = "users_home.tsv"
     save_path = join(location,file_name)

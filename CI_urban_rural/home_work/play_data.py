@@ -10,7 +10,7 @@ from collections import defaultdict, OrderedDict
 #######################################################################################  
 def play_data(data1, data2):
     
-#    data2 = arrange_all_data(data1)
+    data2 = arrange_all_data(data1)
 
 #    data2 = test_data(data1, data2)
 

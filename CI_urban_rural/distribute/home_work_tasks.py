@@ -41,8 +41,8 @@ def save_data(data):
     except Exception as e:
         print e
             
-#     so.save_home_work(data)
-    mo.map_commute_from_home2work(data)
+    so.save_home_work(data)
+#     mo.map_commute_from_home2work(data)
 
 
     
