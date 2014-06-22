@@ -200,4 +200,4 @@ def read_in_file():
     return user_home_work
 
 
-# map_commute_from_home2work()
+map_commute_from_home2work()
