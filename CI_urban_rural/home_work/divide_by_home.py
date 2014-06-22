@@ -56,4 +56,4 @@ def read_in_home_work_output():
     return user_home_work
 
 
-save_per_home_stats()
+# save_per_home_stats()
