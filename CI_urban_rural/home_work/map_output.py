@@ -299,10 +299,10 @@ def map_num_users():
             shpsegs.append(zip(x,y))
             if ring == 0:
                 shapedict = dbf.read_record(npoly)
-            #print shapedict
+            print shapedict
             name = shapedict["ID_DEPART"]
             subpref_id = shapedict["ID_SP"]
-            print name, subpref_id
+#             print name, subpref_id
             # add information about ring number to dictionary.
             shapedict['RINGNUM'] = ring+1
             shapedict['SHAPENUM'] = npoly+1
@@ -317,62 +317,62 @@ def map_num_users():
         lines.set_linewidth(0.1)
         ax.add_collection(lines)  
     
-    # data to plot on the map    
-    lons = []
-    lats = []
-    num = []
-    
-#     # if wanna plot subpref ids only
-#     for subpref in range(1,256):
-#     #     if subpref in [22, 32, 38, 49, 51, 72, 81, 83, 87, 88, 98, 105, 111, 112, 135, 136, 221, 239, 245, 255]:
-#         lons.append(subpref_coord[subpref][0])
-#         lats.append(subpref_coord[subpref][1])
-#         num.append(subpref)    
-
-
-        
-    for subpref in subpref_users.iterkeys():
-        print(subpref)
-        if subpref <> 0 and subpref <> -1:
-            lons.append(subpref_coord[subpref][0])
-            lats.append(subpref_coord[subpref][1])
-            num.append(subpref_users[subpref])
-        
-    x, y = m(lons, lats)
-    m.scatter(x, y, color='white')
-    
-    for name, xc, yc in zip(num, x, y):
-        # draw the pref name in a yellow (shaded) box
-            plt.text(xc, yc, name)
-            
-#     # compute appropriate bins to chop up the data:
-#     db = 1 # bin padding
-#     lon_bins = np.linspace(min(lons)-db, max(lons)+db, 10+1) # 10 bins
-#     lat_bins = np.linspace(min(lats)-db, max(lats)+db, 13+1) # 13 bins
+#     # data to plot on the map    
+#     lons = []
+#     lats = []
+#     num = []
+#     
+# #     # if wanna plot subpref ids only
+# #     for subpref in range(1,256):
+# #     #     if subpref in [22, 32, 38, 49, 51, 72, 81, 83, 87, 88, 98, 105, 111, 112, 135, 136, 221, 239, 245, 255]:
+# #         lons.append(subpref_coord[subpref][0])
+# #         lats.append(subpref_coord[subpref][1])
+# #         num.append(subpref)    
+# 
+# 
 #         
-#     density, _, _ = np.histogram2d(lats, lons, [lat_bins, lon_bins])
+#     for subpref in subpref_users.iterkeys():
+#         print(subpref)
+#         if subpref <> 0 and subpref <> -1:
+#             lons.append(subpref_coord[subpref][0])
+#             lats.append(subpref_coord[subpref][1])
+#             num.append(subpref_users[subpref])
+#         
+#     x, y = m(lons, lats)
+#     m.scatter(x, y, color='white')
+#     
+#     for name, xc, yc in zip(num, x, y):
+#         # draw the pref name in a yellow (shaded) box
+#             plt.text(xc, yc, name)
 #             
-#     # add histogram squares and a corresponding colorbar to the map:
-#     plt.pcolormesh(xc, yc, density, cmap="custom_map")
-    
-    # draw coast lines and fill the continents
-    # m.drawcoastlines()
-    # m.fillcontinents()
-    
-    # m.plot()
-    
-    # f.close()
-    # f2.close()
-    
-
-#     fct()
-#     ax=plt.gca() #get the current axes
-#     PCM=ax.get_children()[2]
-#     cbar = plt.colorbar(orientation='horizontal', shrink=0.625, aspect=20, fraction=0.2,pad=0.02)
-#     cbar.set_label('Number of users',size=18)
-    #plt.clim([0,100])
-    
-    plt.savefig('/home/sscepano/Project7s/D4D/CI/urban_rural/divide_by_home/OUTPUT_files/subpref_users_7s.png',dpi=350)
+# #     # compute appropriate bins to chop up the data:
+# #     db = 1 # bin padding
+# #     lon_bins = np.linspace(min(lons)-db, max(lons)+db, 10+1) # 10 bins
+# #     lat_bins = np.linspace(min(lats)-db, max(lats)+db, 13+1) # 13 bins
+# #         
+# #     density, _, _ = np.histogram2d(lats, lons, [lat_bins, lon_bins])
+# #             
+# #     # add histogram squares and a corresponding colorbar to the map:
+# #     plt.pcolormesh(xc, yc, density, cmap="custom_map")
+#     
+#     # draw coast lines and fill the continents
+#     # m.drawcoastlines()
+#     # m.fillcontinents()
+#     
+#     # m.plot()
+#     
+#     # f.close()
+#     # f2.close()
+#     
+# 
+# #     fct()
+# #     ax=plt.gca() #get the current axes
+# #     PCM=ax.get_children()[2]
+# #     cbar = plt.colorbar(orientation='horizontal', shrink=0.625, aspect=20, fraction=0.2,pad=0.02)
+# #     cbar.set_label('Number of users',size=18)
+#     #plt.clim([0,100])
+#     
+#     plt.savefig('/home/sscepano/Project7s/D4D/CI/urban_rural/divide_by_home/OUTPUT_files/subpref_users_7s.png',dpi=350)
     
 
 

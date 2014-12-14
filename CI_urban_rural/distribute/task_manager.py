@@ -17,10 +17,10 @@ def distribute_task(data1, data2):
 # this part is for reading in the data; comment out after the first step 
 ### (should work without commenting also)
 #######################################################################################   
-#     if data1 is None:
-#         print "Read data started"
-#         data1 = hw.read_data()
-#         print "Read data finished"
+    if data1 is None:
+        print "Read data started"
+        data1 = hw.read_data()
+        print "Read data finished"
         
 #######################################################################################      
 # this part is for playing with the data, so testing & arranging them as needed

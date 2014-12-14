@@ -10,9 +10,9 @@ from collections import defaultdict, OrderedDict
 #######################################################################################  
 def play_data(data1, data2):
     
-#    data2 = arrange_all_data(data1)
+    data2 = arrange_all_data(data1)
 
-#    data2 = test_data(data1, data2)
+#     data2 = test_data(data1, data2)
 
     return data2
 
@@ -24,30 +24,37 @@ def test_data(data1, data2):
     
     print "TESTING starts"
     
-    print len(data1)
-#     print len(data1[0])
-    i = 0
-    for k in data1[0]['home'].keys():
-        i += 1
-        print k, data1[0]['home'][k]
-        print k, data2['home'][k]
-        print data2['home'][k].keys()[0]
-        if i == 15:
-            break
+#     print len(data1)
+# #     print len(data1[0])
+#     i = 0
+#     for k in data1[0]['home'].keys():
+#         i += 1
+#         print k, data1[0]['home'][k]
+#         print k, data2['home'][k]
+#         print data2['home'][k].keys()[0]
+#         if i == 15:
+#             break
     
     print len(data2)
-#     print len(data2['home'])
-#      
-#     i = 0   
-#     for k in data2['home'].keys():
-#         i += 1
-#         print k, data2['home'][k]
-#         try:
-#             print data2['home'][k].itervalues()
-#         except KeyError:
-#             print "Empty"
-#         if i == 33:
-#             break
+    print len(data2['home'])
+      
+    i = 0   
+    for k in data2['home'].keys():
+        i += 1
+        print k, data2['home'][k]
+        try:
+            print data2['home'][k].itervalues()
+        except KeyError:
+            print "Empty"
+        sumant = 0
+        countant = 0
+        for ant in data2['home'][k].items():
+            sumant += ant[1]
+            countant += 1
+        print k, countant, sumant, data2['home'][k].itervalues().next(), data2['home'][k].iterkeys().next()
+        if i == 33:
+            break
+        
     
     print "TESTING ends"
     

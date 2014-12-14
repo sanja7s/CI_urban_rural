@@ -3,6 +3,8 @@ Created on Jun 9, 2014
 
 @author: sscepano
 '''
+import numpy
+
 from os.path import join
 from collections import defaultdict
 
@@ -62,6 +64,100 @@ def save_home_work(data):
         except KeyError:
             print "KeyError"
         f.write('\n') 
+    
+    return
+
+
+##################################################################################################################################
+## This code has to do with our reviewers comments. I will check what is the situation 
+## with found homes, and how statistically significant we can claim they are, before making any changes.
+##################################################################################################################################
+def save_STATS_on_home_work(data):
+      
+    location = "/home/sscepano/Project7s/D4D/CI/urban_rural/home_work/OUTPUT_files"
+    file_name = "users_home_frequency_STATS.tsv" 
+    save_path = join(location,file_name)
+    fh = open(save_path, "w")
+    
+    file_namef = "users_home_frequency_STATS_FILTERED_gr100tot.tsv" 
+    save_pathf = join(location,file_namef)
+    fhf = open(save_pathf, "w")
+    
+    file_name2 = "users_work_frequency_STATS.tsv" 
+    save_path2 = join(location,file_name2)
+    fw = open(save_path2, "w")
+    
+    file_name2f = "users_work_frequency_STATS_FILTERED_gr100tot.tsv" 
+    save_path2f = join(location,file_name2f)
+    fwf = open(save_path2f, "w")
+    
+    less_than_100_calls = 0
+    less_than_100_calls_first = 0
+    ant_neg = 0
+    firstfq_gr08 = 0
+    for k in data['home'].keys():
+        sumant = 0
+        countant = 0
+        for ant in data['home'][k].items():
+            sumant += ant[1]
+            countant += 1
+        try:
+            firstant = data['home'][k].itervalues().next()
+            firstantid = data['home'][k].iterkeys().next()
+            firstfq = numpy.float64(firstant)/sumant 
+        except StopIteration:
+            firstant = 0
+            firstantid = 0
+            firstfq = 0        
+#         f.write( str(k) + '\t' + str(firstantid) + '\t' + str(countant) + '\t' +  str(sumant) + '\t' + str(firstant) + '\t' + str(numpy.float64(firstant)/sumant) + '\n')
+        if sumant < 100:
+            less_than_100_calls += 1
+            less_than_100_calls_first += 1
+            print k
+#         elif firstant < 100:
+#             less_than_100_calls_first += 1
+#             print k
+        elif int(firstantid) == -1:
+            ant_neg += 1
+        elif firstfq <> 'inf' and firstfq >= 0.8:
+            fhf.write( str(k) + '\t' + str(firstantid) + '\t' + str(countant) + '\t' +  str(sumant) + '\t' + str(firstant) + '\t' + str(firstfq) + '\n')
+        
+        fh.write( str(k) + '\t' + str(firstantid) + '\t' + str(countant) + '\t' +  str(sumant) + '\t' + str(firstant) + '\t' + str(firstfq) + '\n')
+             
+    print less_than_100_calls, less_than_100_calls_first, ant_neg
+    
+    
+    
+    for k in data['work'].keys():
+        sumant = 0
+        countant = 0
+        for ant in data['work'][k].items():
+            sumant += ant[1]
+            countant += 1
+        try:
+            firstant = data['work'][k].itervalues().next()
+            firstantid = data['work'][k].iterkeys().next()
+            firstfq = numpy.float64(firstant)/sumant
+        except StopIteration:
+            firstant = 0
+            firstantid = 0
+            firstfq = 0 
+#         f.write( str(k) + '\t' + str(firstantid) + '\t' + str(countant) + '\t' +  str(sumant) + '\t' + str(firstant) + '\t' + str(numpy.float64(firstant)/sumant) + '\n')
+        if sumant < 100:
+            less_than_100_calls += 1
+            less_than_100_calls_first += 1
+            print k
+#         elif firstant < 100:
+#             less_than_100_calls_first += 1
+#             print k
+        elif int(firstantid) == -1:
+            ant_neg += 1
+        elif firstfq <> 'inf' and firstfq >= 0.8:
+            fwf.write( str(k) + '\t' + str(firstantid) + '\t' + str(countant) + '\t' +  str(sumant) + '\t' + str(firstant) + '\t' + str(firstfq) + '\n')
+     
+        fw.write( str(k) + '\t' + str(firstantid) + '\t' + str(countant) + '\t' +  str(sumant) + '\t' + str(firstant) + '\t' + str(firstfq) + '\n')
+            
+    print less_than_100_calls, less_than_100_calls_first, ant_neg
     
     return
 
