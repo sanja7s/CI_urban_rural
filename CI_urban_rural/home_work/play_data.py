@@ -4,15 +4,17 @@ Created on Jun 10, 2014
 @author: sscepano
 '''
 from collections import defaultdict, OrderedDict
-
+import numpy
 #######################################################################################      
 # this one is for calling other functions needed with the data
 #######################################################################################  
 def play_data(data1, data2):
     
-    data2 = arrange_all_data(data1)
+#     data2 = arrange_all_data(data1)
 
 #     data2 = test_data(data1, data2)
+
+    data2 = filter_data(data1, data2, 0.8, 100)
 
     return data2
 
@@ -59,6 +61,82 @@ def test_data(data1, data2):
     print "TESTING ends"
     
     return data2
+
+#######################################################################################      
+# this one is to filter the data for output, in following way: 
+# K is the filter for the most frequent location (pct of calls made there from total)
+# N is for the number of calls the user has to have made in the first location
+# this function will result on one data dict with home work only location for each user as key
+#######################################################################################  
+def filter_data(data1, data2, K=0.5, N=30):
+    
+    # we take the right data that are read in the memory
+    data = data2
+    # filtered output qill go to data7s
+    data7s = defaultdict()
+    
+    print "FILTERING starts"
+    
+    less_than_N_calls_first = 0
+    ant_neg = 0
+    
+    cnt_diff_hw = 0
+
+    # k is iterating over users for whom we found a home
+    for k in data['home'].keys():
+        # total number of calls made in home/work hours
+        # and the number of locations found respectively
+        sumhome = 0
+        sumwork = 0
+        counthome = 0
+        countwork = 0
+        # interate through found home/work locations and count right values
+        for ant in data['home'][k].items():
+            sumhome += ant[1]
+            counthome += 1
+        for ant in data['work'][k].items():
+            sumwork += ant[1]
+            countwork += 1
+        # try is for the cases when one is not found or so, not to break the func
+        try:
+            homecalls = data['home'][k].itervalues().next()
+            homeid = data['home'][k].iterkeys().next()
+            homefq = numpy.float64(homecalls)/sumhome 
+            workcalls = data['work'][k].itervalues().next()
+            workid = data['work'][k].iterkeys().next()
+            workfq = numpy.float64(workcalls)/sumwork 
+        except StopIteration:
+            homecalls = 0
+            homeid = 0
+            homefq = 0 
+            workcalls = 0
+            workid = 0
+            workfq = 0    
+        # here comes the actual FILTERING
+        # if we did not find that user has made N calls in his home/work location (first one), filter him out  
+        if sumhome < N:
+            less_than_N_calls_first += 1
+            print k
+        elif workcalls < N:
+            less_than_N_calls_first += 1
+            print k
+        elif int(homeid) == -1 or int(workid) == -1:
+            ant_neg += 1
+        elif int(homeid) == 0 or int(workid) == 0:
+            print k
+        # the last filter is for boundary case and not frequent enough first location (< K)
+        elif homefq <> 'inf' and homefq >= K and workfq <> 'inf' and workfq >= K:
+            data7s[k] = (homeid, workid)
+            if homeid <> workid:
+                cnt_diff_hw += 1
+                print k, homeid, workid
+        
+    print cnt_diff_hw
+    print "FILTERING ends"
+    
+    return data7s
+
+
 
 #######################################################################################      
 # this one is for summing the parallel output & other formal arrangement

@@ -42,7 +42,10 @@ if __name__ == '__main__':
             # this is for distributing the task 
             ####################################################
             print "Distribute task started."
-            data1, data2 = D.distribute_task(data1, data2)
+            # homework
+#             data1, data2 = D.distribute_task(data1, data2)
+            # commuting
+            data1, data2 = D.distribute_task_commuting(data1, data2)
             print "Distribute task finished."
             ####################################################
             

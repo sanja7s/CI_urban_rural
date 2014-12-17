@@ -15,7 +15,7 @@ def save_home_work(data):
     
     print len(data)
     
-    location = "/home/sscepano/Project7s/D4D/CI/urban_rural/home_work/OUTPUT_files"
+    location = "/home/sscepano/Project7s/D4D/CI/urban_rural/home_work/OUTPUT_files_new"
     file_name = "users_home_frequency.tsv"
     file_name2 = "users_home.tsv"
     save_path = join(location,file_name)
@@ -67,6 +67,29 @@ def save_home_work(data):
     
     return
 
+def save_filtered_input(data):
+    
+    location = "/home/sscepano/Project7s/D4D/CI/urban_rural/home_work/OUTPUT_files_new"
+    file_name = "users_home_work_filtered_v3.tsv"
+    save_path = join(location,file_name)
+    f = open(save_path, "w")
+    
+    cnt_diff_subprefs = defaultdict(int)
+    cnt_commuters = 0 
+    for user in data.keys():
+        f.write(str(user) + '\t')
+        try:
+            f.write(str(data[user][0]) + '\t')
+            f.write(str(data[user][1])) 
+            cnt_diff_subprefs[data[user][1]] = 1
+            cnt_diff_subprefs[data[user][0]] = 1
+            if data[user][0] <> data[user][1]:
+                cnt_commuters += 1
+        except KeyError:
+            print "KeyError"
+        f.write('\n') 
+    print cnt_commuters
+    print sum(cnt_diff_subprefs.values())
 
 ##################################################################################################################################
 ## This code has to do with our reviewers comments. I will check what is the situation 
@@ -74,12 +97,12 @@ def save_home_work(data):
 ##################################################################################################################################
 def save_STATS_on_home_work(data):
       
-    location = "/home/sscepano/Project7s/D4D/CI/urban_rural/home_work/OUTPUT_files"
+    location = "/home/sscepano/Project7s/D4D/CI/urban_rural/home_work/OUTPUT_files_new"
     file_name = "users_home_frequency_STATS.tsv" 
     save_path = join(location,file_name)
     fh = open(save_path, "w")
     
-    file_namef = "users_home_frequency_STATS_FILTERED_gr100tot.tsv" 
+    file_namef = "users_home_frequency_STATS_FILTERED_gr30tot.tsv" 
     save_pathf = join(location,file_namef)
     fhf = open(save_pathf, "w")
     
@@ -87,7 +110,7 @@ def save_STATS_on_home_work(data):
     save_path2 = join(location,file_name2)
     fw = open(save_path2, "w")
     
-    file_name2f = "users_work_frequency_STATS_FILTERED_gr100tot.tsv" 
+    file_name2f = "users_work_frequency_STATS_FILTERED_gr30tot.tsv" 
     save_path2f = join(location,file_name2f)
     fwf = open(save_path2f, "w")
     
@@ -110,7 +133,7 @@ def save_STATS_on_home_work(data):
             firstantid = 0
             firstfq = 0        
 #         f.write( str(k) + '\t' + str(firstantid) + '\t' + str(countant) + '\t' +  str(sumant) + '\t' + str(firstant) + '\t' + str(numpy.float64(firstant)/sumant) + '\n')
-        if sumant < 100:
+        if sumant < 30:
             less_than_100_calls += 1
             less_than_100_calls_first += 1
             print k
@@ -119,7 +142,7 @@ def save_STATS_on_home_work(data):
 #             print k
         elif int(firstantid) == -1:
             ant_neg += 1
-        elif firstfq <> 'inf' and firstfq >= 0.8:
+        elif firstfq <> 'inf' and firstfq >= 0.5:
             fhf.write( str(k) + '\t' + str(firstantid) + '\t' + str(countant) + '\t' +  str(sumant) + '\t' + str(firstant) + '\t' + str(firstfq) + '\n')
         
         fh.write( str(k) + '\t' + str(firstantid) + '\t' + str(countant) + '\t' +  str(sumant) + '\t' + str(firstant) + '\t' + str(firstfq) + '\n')
@@ -143,7 +166,7 @@ def save_STATS_on_home_work(data):
             firstantid = 0
             firstfq = 0 
 #         f.write( str(k) + '\t' + str(firstantid) + '\t' + str(countant) + '\t' +  str(sumant) + '\t' + str(firstant) + '\t' + str(numpy.float64(firstant)/sumant) + '\n')
-        if sumant < 100:
+        if sumant < 30:
             less_than_100_calls += 1
             less_than_100_calls_first += 1
             print k
@@ -152,7 +175,7 @@ def save_STATS_on_home_work(data):
 #             print k
         elif int(firstantid) == -1:
             ant_neg += 1
-        elif firstfq <> 'inf' and firstfq >= 0.8:
+        elif firstfq <> 'inf' and firstfq >= 0.5:
             fwf.write( str(k) + '\t' + str(firstantid) + '\t' + str(countant) + '\t' +  str(sumant) + '\t' + str(firstant) + '\t' + str(firstfq) + '\n')
      
         fw.write( str(k) + '\t' + str(firstantid) + '\t' + str(countant) + '\t' +  str(sumant) + '\t' + str(firstant) + '\t' + str(firstfq) + '\n')
@@ -185,3 +208,56 @@ def select_only_home_work(data):
             print
         
     return user_home_work
+
+
+#######################################################################################      
+# read in home work data per user and count commuters and save the graph as weighted edge list
+#######################################################################################
+def cnt_commuting_from_home_work(data=None):
+    
+    commuting_graph = defaultdict(int)
+    
+    if data == None:
+    
+        location = "/home/sscepano/Project7s/D4D/CI/urban_rural/home_work/OUTPUT_files_new"
+        file_name = "users_home_work_filtered_v2.tsv"
+        save_path = join(location,file_name)
+        f = open(save_path, "r")
+        
+        for line in f:
+    
+            usr, home, work, empty = line.split('\t')
+            usr = int(usr)
+            home = int(home)
+            work = int(work)
+            print usr, home, work
+            
+            commuting_graph[home] = commuting_graph.get(home, defaultdict(int))
+            commuting_graph[home][work] += 1
+            
+    else:
+        
+        for usr in data.keys():
+            home = data[usr][0]
+            work = data[usr][1]
+#             print home, work
+            commuting_graph[home] = commuting_graph.get(home, defaultdict(int))
+            commuting_graph[home][work] += 1
+#             print commuting_graph[home]
+        
+    
+    location2 = "/home/sscepano/Project7s/D4D/CI/urban_rural/home_work/OUTPUT_files_new"
+    file_name2 = "commuting_graph_from_home_work_filtered_no_self_loops_v2.tsv"
+    save_path = join(location2,file_name2)
+    f2 = open(save_path, "w")    
+        
+    for home in commuting_graph.keys():
+        for work in commuting_graph[home].keys():
+            if home <> work:
+                f2.write(str(home) + '\t' + str(work) + '\t' + str(commuting_graph[home][work]) + '\n')
+        
+    return
+
+
+# cnt_commuting_from_home_work()
+   

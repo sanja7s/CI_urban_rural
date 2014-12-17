@@ -3,11 +3,11 @@ Created on Jun 9, 2014
 
 @author: sscepano
 '''
-import home_work.read_in as rd
-import home_work.save_output as so
-import home_work.map_output as mo
-import home_work.play_data as pd
-
+import commuting.read_in as rd
+import commuting.save_output as so
+import commuting.map_output as mo
+import commuting.play_data as pd
+ 
 #######################################################################################      
 # the functions for home work to be called by the distributor -- task manager
 #######################################################################################   
@@ -41,12 +41,9 @@ def save_data(data):
     except Exception as e:
         print e
             
-#     so.save_home_work(data)
 #     mo.map_commute_from_home2work(data)
-#     so.save_STATS_on_home_work(data)
-# this one you can call only to the filtered data, so after play data calls filter_data()
-#     so.save_filtered_input(data)
-    so.cnt_commuting_from_home_work(data)
+    so.save_commuting_graph(data)
+#     mo.map_commutes(data)
 
 
     

@@ -162,7 +162,7 @@ def map_commutes(G):
     m.drawcoastlines()
     #m.fillcontinents()
         
-    plt.savefig('/home/sscepano/Project7s/D4D/CI/urban_rural/home_work/OUTPUT_files/maps/hw_commuting_colored_by_work_gr10commuters.png',dpi=700)
+    plt.savefig('/home/sscepano/Project7s/D4D/CI/COMMUTINGNEW/maps/hw_commuting_colored_by_work_gr10commuters.png',dpi=700)
     #plt.show()
     
     ###################################################################################################3
